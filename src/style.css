@@ -31,3 +31,10 @@
 .layers button.on{border-color:#58ffea;background:#07516b;box-shadow:inset 0 0 12px #4fffe522}
 .focus3d{position:absolute;left:12px;top:150px;width:155px;height:190px;z-index:13;border:1px solid #168da1;border-radius:12px;background:radial-gradient(circle,#0b5d70,#022333 72%);display:grid;place-items:center;padding:7px;perspective:600px;box-shadow:inset 0 0 24px #3ae7f322}
 .focus3d small{font-size:9px;color:#8bdde6;letter-spacing:1px}.focus3d>b{color:#ffe47b}.focus-model{position:relative;width:72px;height:62px;display:grid;place-items:center;font-size:44px;color:#ffb94d;text-shadow:0 0 10px #ffe989,0 0 25px #ff733c;transform-style:preserve-3d;transition:transform .25s ease}.focus-model i{position:absolute;width:70px;height:24px;border:2px solid #ffe467;border-radius:50%;box-shadow:0 0 10px #ffe467;animation:qClock 2.4s linear infinite}.focus3d nav{display:flex;gap:3px}.focus3d nav button{background:#042b3d;color:#dff;border:1px solid #167b90;border-radius:5px;padding:3px 5px}
+
+/* PASSO 6 — programas, sequência e repetição */
+.program-search{display:grid!important;grid-template-columns:1fr 30px!important;gap:5px;padding:6px 8px!important;height:auto!important}
+.program-search input{min-width:0;background:#021e2e;border:1px solid #12677b;border-radius:7px;color:#dff;padding:7px 9px}.program-search button{border:1px solid #12677b!important;border-radius:7px!important;background:#043246!important;color:#9ff!important}
+.related>div.program-selected{background:#07506a88;box-shadow:inset 3px 0 #4fffe5}
+.sequence-info{display:flex;gap:10px;padding:6px 15px;color:#7de8ee;font-size:10px}.sequence-info span{border:1px solid #145d6d;border-radius:6px;padding:3px 6px}
+.repeat-box{display:flex;justify-content:center;gap:8px;margin-top:5px}.repeat-box label,.repeat-box button{background:#042b3d;color:#dff;border:1px solid #167b90;border-radius:7px;padding:4px 7px;font-size:10px}.repeat-box select{background:#021e2e;color:#fff;border:0}.repeat-box button.on{border-color:#62ff9a;color:#82ffad}
