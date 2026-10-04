@@ -38,3 +38,10 @@
 .related>div.program-selected{background:#07506a88;box-shadow:inset 3px 0 #4fffe5}
 .sequence-info{display:flex;gap:10px;padding:6px 15px;color:#7de8ee;font-size:10px}.sequence-info span{border:1px solid #145d6d;border-radius:6px;padding:3px 6px}
 .repeat-box{display:flex;justify-content:center;gap:8px;margin-top:5px}.repeat-box label,.repeat-box button{background:#042b3d;color:#dff;border:1px solid #167b90;border-radius:7px;padding:4px 7px;font-size:10px}.repeat-box select{background:#021e2e;color:#fff;border:0}.repeat-box button.on{border-color:#62ff9a;color:#82ffad}
+
+/* PASSO 7 — leitura, onda animada e status */
+.reading progress{width:calc(100% - 24px);margin:7px 12px;accent-color:#55f2a3}.checks{display:grid}.checks span{opacity:.38;transition:.2s}.checks span.ok{opacity:1;color:#62ef9a;text-shadow:0 0 5px #54f48a}
+.wave{height:52px;padding:7px 14px;display:flex;align-items:center;gap:3px}.wave i{display:block;width:3px;background:#55fff0;border-radius:3px;transform-origin:center;animation:waveLive 1.2s ease-in-out infinite}.wave i:nth-child(3n){animation-delay:-.25s}.wave.paused i{animation-play-state:paused;opacity:.45}.wave.running i{animation-play-state:running}
+.status b.live{color:#63ff99;text-shadow:0 0 9px #55ff8a}.status p{font-size:11px;color:#8fc9d1}
+button{transition:transform .08s ease,filter .12s ease}button:active{transform:translateY(2px) scale(.985);filter:brightness(.9)}
+@keyframes waveLive{0%,100%{transform:scaleY(.55);opacity:.65}50%{transform:scaleY(1.2);opacity:1}}
