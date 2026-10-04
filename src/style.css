@@ -23,3 +23,11 @@
 .target-demo{position:absolute;right:145px;bottom:66px;z-index:12;display:flex;gap:4px}
 @keyframes targetPulse{0%,100%{transform:translate(-50%,-50%) scale(.85);opacity:.7}50%{transform:translate(-50%,-50%) scale(1.2);opacity:1}}
 @keyframes qClock{to{transform:translate(-50%,-50%) rotate(352deg)}}@keyframes qCounter{from{transform:translate(-50%,-50%) rotate(352deg)}to{transform:translate(-50%,-50%) rotate(-8deg)}}@keyframes qVibe{from{filter:brightness(.8)}to{filter:brightness(1.5)}}
+
+/* PASSO 5 — camadas anatômicas + painel 3D */
+.layer{position:absolute;left:50%;transform:translateX(-50%);font-style:normal;pointer-events:none;z-index:3}
+.layer.organs{top:88px;font-size:52px;color:#42dff077;text-shadow:0 0 12px #43eaff}
+.layer.endocrine{top:74px;color:#ffe56b;text-shadow:0 0 7px #ffe56b}.layer.skeletal{top:70px;font-size:120px;color:#dffcff66}.layer.vascular{top:92px;font-size:70px;color:#ff766f99;text-shadow:0 0 7px #ff6658}.layer.nervous{top:72px;font-size:130px;color:#ffe86e88}.layer.lymphatic{top:112px;font-size:55px;color:#74ffc999}.layer.muscular{top:78px;font-size:100px;color:#ff8a7066}
+.layers button.on{border-color:#58ffea;background:#07516b;box-shadow:inset 0 0 12px #4fffe522}
+.focus3d{position:absolute;left:12px;top:150px;width:155px;height:190px;z-index:13;border:1px solid #168da1;border-radius:12px;background:radial-gradient(circle,#0b5d70,#022333 72%);display:grid;place-items:center;padding:7px;perspective:600px;box-shadow:inset 0 0 24px #3ae7f322}
+.focus3d small{font-size:9px;color:#8bdde6;letter-spacing:1px}.focus3d>b{color:#ffe47b}.focus-model{position:relative;width:72px;height:62px;display:grid;place-items:center;font-size:44px;color:#ffb94d;text-shadow:0 0 10px #ffe989,0 0 25px #ff733c;transform-style:preserve-3d;transition:transform .25s ease}.focus-model i{position:absolute;width:70px;height:24px;border:2px solid #ffe467;border-radius:50%;box-shadow:0 0 10px #ffe467;animation:qClock 2.4s linear infinite}.focus3d nav{display:flex;gap:3px}.focus3d nav button{background:#042b3d;color:#dff;border:1px solid #167b90;border-radius:5px;padding:3px 5px}
