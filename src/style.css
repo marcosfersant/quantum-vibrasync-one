@@ -7,3 +7,19 @@
 .generators>div h3{grid-column:1/-1}.generators label{font-size:11px;color:#aee8ef;display:flex;align-items:center;gap:5px}
 .generators input[type=number],.generators select{width:82px;background:#052c3c;border:1px solid #168da1;color:#fff;border-radius:6px;padding:5px}
 .generators input[type=range]{width:90px;accent-color:#42eee1}
+
+/* PASSO 4 — Atlas novo, alvo ativo e Campo Quântico */
+.body-hit{position:absolute;top:8%;height:82%;width:145px;border:0;background:transparent;border-radius:45%;z-index:4;cursor:pointer}
+.male-hit{left:calc(50% - 160px)}.female-hit{left:calc(50% + 15px)}
+.body-hit.selected{outline:1px solid #5fffea55;box-shadow:0 0 22px #49f9e733}
+.target-anchor{position:absolute;z-index:9;transform:translate(-50%,-50%);transition:top .55s ease,left .55s ease,margin-left .4s ease;pointer-events:none}
+.target-anchor.male-target{margin-left:-88px}.target-anchor.female-target{margin-left:88px}
+.target-glow{position:absolute;left:50%;top:50%;width:25px;height:25px;transform:translate(-50%,-50%);border-radius:50%;background:#ffd85d;box-shadow:0 0 10px #fff6a1,0 0 28px #ffc54d,0 0 52px #ff8538;animation:targetPulse 1s ease-in-out infinite}
+.target-anchor .ring{left:50%;top:50%;margin:0}
+.target-anchor .r1{animation:qClock 2.2s linear infinite,qVibe .45s ease-in-out infinite alternate}
+.target-anchor .r2{animation:qCounter 2.8s linear infinite,qVibe .38s ease-in-out infinite alternate}
+.atlas-state{position:absolute;left:18px;bottom:66px;z-index:12;display:flex;gap:8px;align-items:center;color:#ffe47b}
+.atlas-state button,.target-demo button{background:#032c3f;border:1px solid #117a8e;color:#dff;border-radius:7px;padding:5px 7px}
+.target-demo{position:absolute;right:145px;bottom:66px;z-index:12;display:flex;gap:4px}
+@keyframes targetPulse{0%,100%{transform:translate(-50%,-50%) scale(.85);opacity:.7}50%{transform:translate(-50%,-50%) scale(1.2);opacity:1}}
+@keyframes qClock{to{transform:translate(-50%,-50%) rotate(352deg)}}@keyframes qCounter{from{transform:translate(-50%,-50%) rotate(352deg)}to{transform:translate(-50%,-50%) rotate(-8deg)}}@keyframes qVibe{from{filter:brightness(.8)}to{filter:brightness(1.5)}}
