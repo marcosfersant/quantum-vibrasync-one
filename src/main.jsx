@@ -1,13 +1,18 @@
-import React from 'react';
+import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {Home,Database,Activity,ScanLine,Radio,Mic,Video,Image,FolderOpen,Settings,User,RotateCw,ZoomIn,ZoomOut,Layers,RefreshCw,Play,Star} from 'lucide-react';
 import './style.css';
 
+
+const waveTypes=[['sine','Senoidal'],['square','Quadrada'],['triangle','Triangular'],['sawtooth','Serra']];
+function noise(ctx,type){const b=ctx.createBuffer(1,ctx.sampleRate*3,ctx.sampleRate),d=b.getChannelData(0);let last=0;for(let i=0;i<d.length;i++){const w=Math.random()*2-1;if(type==='brown'){last=(last+.02*w)/1.02;d[i]=last*3.5}else d[i]=w}return b}
+function Engine({on,gens,master,white,brown,pink}){const ctx=useRef(),nodes=useRef([]);useEffect(()=>{const stop=()=>{nodes.current.forEach(n=>{try{n.stop?.()}catch{}try{n.disconnect?.()}catch{}});nodes.current=[]};stop();if(!on)return;const A=window.AudioContext||window.webkitAudioContext;ctx.current??=new A();const ac=ctx.current;ac.resume();gens.filter(g=>g.enabled).forEach(g=>{const o=ac.createOscillator(),v=ac.createGain();o.type=g.wave;o.frequency.value=g.freq;v.gain.value=(master/100)*(g.volume/100)*.18;o.connect(v).connect(ac.destination);o.start();nodes.current.push(o,v)});[['white',white],['white',pink],['brown',brown]].forEach(([t,n])=>{if(!n)return;const s=ac.createBufferSource(),v=ac.createGain();s.buffer=noise(ac,t);s.loop=true;v.gain.value=n/100*.1;s.connect(v).connect(ac.destination);s.start();nodes.current.push(s,v)});return stop},[on,gens,master,white,brown,pink]);return null}
+
 const menu=[[Home,'Início'],[Database,'Programas de Tratamento'],[Activity,'Leitura / Bioimpedância'],[ScanLine,'Órgãos e Sistemas'],[Radio,'Frequência Livre'],[Mic,'Voz'],[Video,'Vídeo'],[Image,'Foto'],[FolderOpen,'Arquivos'],[Settings,'Configurações']];
 const programs=['Função da tireoide','Hipotireoidismo','Hipertireoidismo','Tireoidite','Doença de Graves','Bócio','Nódulos tireoidianos','Câncer de tireoide','Paratireoide','Equilíbrio hormonal'];
 function App(){
- const [sex,setSex]=React.useState('Masculino');
- return <main className="app">
+ const [sex,setSex]=useState('Masculino'),[on,setOn]=useState(false),[elapsed,setElapsed]=useState(0),[repeat,setRepeat]=useState(1),[infinite,setInfinite]=useState(false),[a,setA]=useState({enabled:true,freq:432,wave:'sine',volume:70,dwell:60,duty:50,offset:0}),[b,setB]=useState({enabled:true,freq:528,wave:'sine',volume:55,dwell:60,duty:50,offset:0}),[master,setMaster]=useState(70),[white,setWhite]=useState(30),[pink,setPink]=useState(25),[brown,setBrown]=useState(20); const duration=1800,gens=useMemo(()=>[a,b],[a,b]); useEffect(()=>{if(!on)return;const id=setInterval(()=>setElapsed(t=>{if(t<duration)return t+1;if(infinite||repeat>1){if(!infinite)setRepeat(r=>Math.max(1,r-1));return 0}setOn(false);return duration}),1000);return()=>clearInterval(id)},[on,infinite,repeat]);
+ return <main className="app"><Engine on={on} gens={gens} master={master} white={white} pink={pink} brown={brown}/>
   <header><div className="brand"><b>⚛</b><strong>Quantum <span>VibraSync</span> One</strong></div><div className="top"><i>● Conectado</i><b>▣ Banco de Programas<br/><span>90.893</span></b><User/><Settings/></div></header>
   <div className="workspace">
    <aside>{menu.map(([I,t],i)=><button key={t} className={i===3?'active':''}><I/>{t}</button>)}</aside>
@@ -25,10 +30,10 @@ function App(){
     </section>
     <section className="related panel"><h3>Programas Relacionados <b>10</b></h3>{programs.map(x=><div key={x}><span>• {x}</span><button><Play/></button><Star/></div>)}</section>
     <section className="reading panel"><h3>Leitura / Bioimpedância</h3><div className="mini-body">♙</div><b>Status</b><p>Aguardando leitura</p><button className="start">▥ Iniciar Leitura</button><div className="checks">✓ Eletrodos conectados<br/>✓ Sinal estável<br/>✓ Calibração OK<br/>✓ Pronto para leitura</div></section>
-    <section className="player panel"><h3>Player de Frequência</h3><div className="wave">∿∿∿∿∿</div><b>Programa selecionado</b><div className="bar"/><div className="transport">◀ ■ <button>▶</button> ▶ ↻</div></section>
-    <section className="generators panel"><div><h3>Gerador A</h3><b>432,00 Hz</b><small>Senoidal • Ativo</small></div><div><h3>Gerador B</h3><b>528,00 Hz</b><small>Senoidal • Independente</small></div></section>
+    <section className="player panel"><h3>Player de Frequência</h3><div className="wave">∿∿∿∿∿</div><b>Programa selecionado</b><input className="timeline" type="range" min="0" max={duration} value={elapsed} onChange={e=>setElapsed(+e.target.value)}/><div className="transport"><button onClick={()=>setElapsed(0)}>◀</button><button onClick={()=>{setOn(false);setElapsed(0)}}>■</button><button onClick={()=>setOn(v=>!v)}>{on?'Ⅱ':'▶'}</button><button onClick={()=>setElapsed(t=>Math.min(duration,t+10))}>▶</button><button onClick={()=>setInfinite(v=>!v)}>{infinite?'∞':'↻'}</button></div></section>
+    <section className="generators panel">{[['Gerador A',a,setA],['Gerador B',b,setB]].map(([n,g,set])=><div key={n}><h3>{n}</h3><label><input type="checkbox" checked={g.enabled} onChange={e=>set({...g,enabled:e.target.checked})}/> Ativo</label><label>Frequência <input type="number" value={g.freq} onChange={e=>set({...g,freq:+e.target.value||1})}/> Hz</label><label>Volume <input type="range" value={g.volume} onChange={e=>set({...g,volume:+e.target.value})}/> {g.volume}%</label><label>Onda <select value={g.wave} onChange={e=>set({...g,wave:e.target.value})}>{waveTypes.map(([v,n])=><option key={v} value={v}>{n}</option>)}</select></label><label>Dwell <input type="number" value={g.dwell} onChange={e=>set({...g,dwell:+e.target.value||1})}/></label><label>Duty <input type="number" value={g.duty} onChange={e=>set({...g,duty:+e.target.value||50})}/></label><label>Offset <input type="number" value={g.offset} onChange={e=>set({...g,offset:+e.target.value||0})}/></label></div>)}</section>
     <section className="waves panel"><h3>Tipo de Onda</h3><div>{['∿ Senoidal','▱ Quadrada','△ Triangular','⌁ Serra','⁙ Ruído Branco','≋ Ruído Rosa','≋ Ruído Marrom','⚙ Personalizada'].map(x=><button key={x}>{x}</button>)}</div></section>
-    <section className="vol panel"><h3>Controles de Volume</h3>{['Frequência Original 70%','Ruído Branco 30%','Ruído Rosa 25%','Ruído Marrom 20%'].map(x=><label key={x}>{x}<input type="range" defaultValue="50"/></label>)}</section>
+    <section className="vol panel"><h3>Controles de Volume</h3>{[['Frequência Original',master,setMaster],['Ruído Branco',white,setWhite],['Ruído Rosa',pink,setPink],['Ruído Marrom',brown,setBrown]].map(([n,v,set])=><label key={n}>{n} {v}%<input type="range" value={v} onChange={e=>set(+e.target.value)}/></label>)}</section>
     <section className="status panel"><h3>Status Global</h3><b>● PRONTO</b><p>Projeto novo • interface limpa</p></section>
    </section>
   </div>
